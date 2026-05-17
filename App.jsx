@@ -26,10 +26,89 @@ import Footer from './Footer'
 import Layout from './Layout'
 import UserCard from './UserCard'
 import { useReducer, useRef, useEffect } from "react";
-import { useState } from "react";
 import TextInput from "./TextInput";
+import { useCallback, useMemo } from "react";
 
 function App() {
+
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
+
+  // Fetch users
+  const fetchUsers = useCallback(() => {
+
+    const controller = new AbortController();
+
+    fetch("https://jsonplaceholder.typicode.com/users", {
+      signal: controller.signal
+    })
+      .then((res) => res.json())
+      .then((data) => {
+
+        // Filter users
+        const filtered = data.filter((user) =>
+          user.name.toLowerCase().includes(search.toLowerCase())
+        );
+
+        setUsers(filtered);
+      });
+
+    // Cleanup
+    return () => {
+      controller.abort();
+      console.log("Fetch aborted");
+    };
+
+  }, [search]);
+
+  // useEffect
+  useEffect(() => {
+
+    const cleanup = fetchUsers();
+
+    return cleanup;
+
+  }, [fetchUsers]);
+
+  // Expensive value using useMemo
+  const totalUsers = useMemo(() => {
+    console.log("Calculating...");
+    return users.length;
+  }, [users]);
+
+  return (
+    <div style={{ padding: "20px" }}>
+
+      <h1>User List</h1>
+
+      <input
+        type="text"
+        placeholder="Search user"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <button onClick={fetchUsers}>
+        Refresh
+      </button>
+
+      <h3>Total Users: {totalUsers}</h3>
+
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.name}
+          </li>
+        ))}
+      </ul>
+
+    </div>
+  );
+}
+
+export default App;
+
+{/* function App() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -125,7 +204,7 @@ function App() {
   );
 }
 
-export default App;
+export default App; */}
 
 {/*function App() {
 
