@@ -25,9 +25,83 @@ import Header from './Header'
 import Footer from './Footer'
 import Layout from './Layout'
 import UserCard from './UserCard'
-
+import { useReducer, useRef, useEffect } from "react";
 
 function App() {
+
+  // Load counter from localStorage
+  const savedCount = localStorage.getItem("count");
+
+  const [count, dispatch] = useReducer(
+    reducer,
+    savedCount ? Number(savedCount) : 0
+  );
+
+  // Save counter to localStorage
+  useEffect(() => {
+    localStorage.setItem("count", count);
+  }, [count]);
+
+  // useRef
+  const inputRef = useRef();
+
+  function focusInput() {
+    inputRef.current.focus();
+  }
+
+  // Reducer function
+function reducer(state, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + 1;
+
+    case "DECREMENT":
+      return state - 1;
+
+    case "RESET":
+      return 0;
+
+    default:
+      return state;
+  }
+}
+
+  return (
+    <div style={{ padding: "20px" }}>
+
+      <h1>Counter: {count}</h1>
+
+      <button onClick={() => dispatch({ type: "INCREMENT" })}>
+        Increment
+      </button>
+
+      <button onClick={() => dispatch({ type: "DECREMENT" })}>
+        Decrement
+      </button>
+
+      <button onClick={() => dispatch({ type: "RESET" })}>
+        Reset
+      </button>
+
+      <hr />
+
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Enter text"
+      />
+
+      <button onClick={focusInput}>
+        Focus Input
+      </button>
+
+    </div>
+  );
+}
+
+export default App;
+
+{/*function App() {
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -53,7 +127,7 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/}
 
 {/* function App() {
 
