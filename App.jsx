@@ -29,6 +29,51 @@ import UserCard from './UserCard'
 
 function App() {
 
+  const [darkMode, setDarkMode] = useState(false);
+
+  function toggleMode() {
+    setDarkMode(!darkMode);
+  }
+
+  return (
+    <div
+      style={{
+        backgroundColor: darkMode ? "black" : "white",
+        color: darkMode ? "white" : "black",
+        height: "100vh",
+        padding: "20px"
+      }}
+    >
+      <h1>{darkMode ? "Dark Mode" : "Light Mode"}</h1>
+
+      <button onClick={toggleMode}>
+        Toggle Mode
+      </button>
+    </div>
+  );
+}
+
+export default App;
+
+{/* function App() {
+
+  const [text, setText] = useState("");
+
+  return (
+    <div>
+      <h2>Live Text Preview</h2>
+
+      <input type="text" placeholder="Type here" value={text} onChange={(e) => setText(e.target.value)}
+/>
+
+      <p>You typed: {text}</p>
+    </div>
+  );
+}
+
+export default App; */}
+{/*function App() {
+
   function handleClick() {
     alert("Welcome!");
   }
@@ -51,7 +96,9 @@ function App() {
   );
 }
 
-export default App;
+export default App; */}
+
+
 {/*function App() {
   return (
     <div>
