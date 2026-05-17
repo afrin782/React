@@ -26,9 +26,108 @@ import Footer from './Footer'
 import Layout from './Layout'
 import UserCard from './UserCard'
 import { useReducer, useRef, useEffect } from "react";
-
+import { useState } from "react";
+import TextInput from "./TextInput";
 
 function App() {
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [data, setData] = useState(null);
+
+  // Validation
+  const isValid =
+    name !== "" &&
+    email.includes("@") &&
+    password !== "";
+
+  // Submit
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    setData({
+      name,
+      email,
+      password
+    });
+  }
+
+  // Clear
+  function handleClear() {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setData(null);
+  }
+
+  return (
+    <div>
+
+      <h1>Signup Form</h1>
+
+      <form onSubmit={handleSubmit}>
+
+        <TextInput
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <br /><br />
+
+        <TextInput
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <br /><br />
+
+        <TextInput
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <br /><br />
+
+        <button type="submit" disabled={!isValid}>
+          Submit
+        </button>
+
+        <button type="button" onClick={handleClear}>
+          Clear
+        </button>
+
+      </form>
+
+      <hr />
+
+      <h2>Preview</h2>
+
+      {data && (
+        <div>
+          <p>Name: {data.name}</p>
+          <p>Email: {data.email}</p>
+          <p>Password: {data.password}</p>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+export default App;
+
+{/*function App() {
 
   const productsData = [
     { id: 1, name: "Laptop" },
@@ -79,7 +178,9 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/}
+
+
 {/*function App() {
 
   // Load counter from localStorage
