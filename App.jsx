@@ -27,7 +27,60 @@ import Layout from './Layout'
 import UserCard from './UserCard'
 import { useReducer, useRef, useEffect } from "react";
 
+
 function App() {
+
+  const productsData = [
+    { id: 1, name: "Laptop" },
+    { id: 2, name: "Phone" },
+    { id: 3, name: "Watch" },
+    { id: 4, name: "Headset" }
+  ];
+
+  const [search, setSearch] = useState("");
+
+  // Filter products
+  const filteredProducts = productsData.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="container">
+
+      <h1>Products List</h1>
+
+      <input
+        type="text"
+        placeholder="Search product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {
+        filteredProducts.length > 0 ? (
+
+          filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="product"
+            >
+              {product.name}
+            </div>
+          ))
+
+        ) : (
+
+          <p>No products available</p>
+
+        )
+      }
+
+    </div>
+  );
+}
+
+export default App;
+{/*function App() {
 
   // Load counter from localStorage
   const savedCount = localStorage.getItem("count");
@@ -99,7 +152,7 @@ function reducer(state, action) {
   );
 }
 
-export default App;
+export default App; */}
 
 {/*function App() {
 
